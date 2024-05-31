@@ -2,6 +2,8 @@ package org.epsi;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="Livre")
 public class Livre {
@@ -16,6 +18,10 @@ public class Livre {
 
     @Column(name = "AUTEUR")
     private String auteur;
+
+
+    @ManyToMany(mappedBy = "livres")
+    private List<Emprunt> emprunts;
 
 
     public Livre() {
