@@ -1,45 +1,63 @@
 package org.epsi;
+
+import banque.entite.Adresse;
+import banque.entite.Banque;
+import banque.entite.Client;
+import banque.entite.Compte;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.List;
+import java.time.LocalDate;
+
 
 public class TestBibliotheque {
 
-
     public static void main(String[] args) {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("demo-jpa");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("banque");
         EntityManager em = emf.createEntityManager();
 
-        // Réaliser une requête qui permet d’extraire un emprunt et tous ses livres associés
-        extractEmpruntWithLivres(em);
+        try {
+            em.getTransaction().begin();
 
-        // Fermer EntityManager et EntityManagerFactory
-        em.close();
-        emf.close();
-    }
+            // Création d'une adresse
+            Adresse adresse = new Adresse();
+            adresse.setRue("lolo");
+            adresse.setNumero(15);
+            adresse.setCodePostale(34000);
+            adresse.setVille("Montpellier");
 
-    private static void extractEmpruntWithLivres(EntityManager em) {
-        // ID de l'emprunt à rechercher
-        Long empruntId = 1L;
+            // Création d'une banque
+            Banque banque = new Banque();
+            banque.setNom("LCL");
 
-        // Réaliser une requête JPQL pour extraire un emprunt et tous ses livres associés
-        String jpql = "SELECT e FROM Emprunt e JOIN FETCH e.livres WHERE e.id = :empruntId";
+            // Création d'un client
+            Client client = new Client();
+            client.setNom("ben");
+            client.setDateNaissance(LocalDate.now());
+            client.setAdresse(adresse); // Associer l'adresse au client
 
-        // Exécuter la requête
-        List<Emprunt> emprunts = em.createQuery(jpql, Emprunt.class)
-                .setParameter("empruntId", empruntId)
-                .getResultList();
+            // Création d'un compte
+            Compte compte = new Compte();
+            compte.setSold(100.0);
+            compte.setNumero("1");
 
-        // Vérifier si un emprunt a été trouvé
-        if (!emprunts.isEmpty()) {
-            Emprunt emprunt = emprunts.get(0);
-            System.out.println("Emprunt trouvé : " + emprunt);
-            System.out.println("Livres associés à l'emprunt :");
+            // Associer le client au compte
 
-    }
+            // Persister les entités
+            em.persist(banque);
+            em.persist(client);
+            em.persist(compte);
 
+            em.getTransaction().commit();
+
+            System.out.println("Données persistées avec succès !");
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 }
