@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="compte")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Compte {
 
     @Id

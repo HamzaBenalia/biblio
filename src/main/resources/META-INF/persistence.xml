@@ -21,6 +21,9 @@
     <class>banque.entite.Compte</class>
     <class>banque.entite.Operation</class>
     <class>banque.entite.Adresse</class>
+    <class>banque.entite.LivretA</class>
+    <class>banque.entite.AssuranceVie</class>
+    <class>banque.entite.Virement</class>
 <!--    <class>banque.entite.LivretA</class>-->
     <properties>
       <!-- Pour regénérer automatiquement le schema à chaque redémarrage de l’application  -->

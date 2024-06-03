@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="operation")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Operation {
 
     @Id
